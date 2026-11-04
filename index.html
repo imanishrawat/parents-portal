@@ -23,15 +23,16 @@ button{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:11px 
 const $=id=>document.getElementById(id),te=new TextEncoder(),td=new TextDecoder();
 const ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s).replace(/[\u0660-\u0669]/g,d=>d.charCodeAt(0)-0x660).replace(/[\u06F0-\u06F9]/g,d=>d.charCodeAt(0)-0x6F0).replace(/[\s\u200B-\u200F\u00A0\uFEFF]/g,'');
 const fd=d=>{if(!d)return '';const m=String(d).match(/^(\d{4})-(\d\d)-(\d\d)/);return m?m[3]+'/'+m[2]+'/'+m[1]:esc(d)};
 async function open(sis,code){
  const r=await fetch('parent-data.json',{cache:'no-store'});if(!r.ok)throw new Error('nodata');const B=await r.json();
  const h=await crypto.subtle.digest('SHA-256',te.encode(sis+':'+B.k)),id=[...new Uint8Array(h)].slice(0,12).map(x=>x.toString(16).padStart(2,'0')).join(''),e=B.d[id];
- if(!e)throw new Error('bad');
- const km=await crypto.subtle.importKey('raw',te.encode(sis+':'+code),'PBKDF2',false,['deriveKey']);
+ if(!e){const x=new Error('nosis');x.n=Object.keys(B.d).length;throw x}
+ try{const km=await crypto.subtle.importKey('raw',te.encode(sis+':'+code),'PBKDF2',false,['deriveKey']);
  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:ub(e.s),iterations:200000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(e.i)},key,ub(e.c));
- return{d:JSON.parse(td.decode(pt)),u:B.u};
+ return{d:JSON.parse(td.decode(pt)),u:B.u}}catch(x){throw new Error('badcode')}
 }
 function term(R){let h='';const ch=[];
  if(R.fa!=null&&R.fa!=='')ch.push(['FA average',R.fa+'%']);
@@ -49,9 +50,9 @@ function show(res){const d=res.d,ts=Object.keys(d.t);$('login').hidden=true;cons
  r.innerHTML=`<div class="c"><h1>${esc(d.n)}</h1><div class="mu">Class ${esc(d.g)} · ${esc(d.y)} · Updated ${fd(res.u)}</div><div class="noprint" style="margin-top:10px"><button class="g" onclick="print()">🖨️ Print / Save PDF</button> <button class="g" onclick="location.reload()">Log out</button></div></div>${ts.length?`<div class="tabs noprint">${ts.map((t,i)=>`<button data-t="${i}" class="${i==ts.length-1?'on':''}">${t}</button>`).join('')}</div><div id="tb"></div>`:'<div class="c mu">No records published yet.</div>'}`;
  if(!ts.length)return;const pick=i=>{$('tb').innerHTML=`<h2 style="margin:4px 2px 10px">${ts[i]}</h2>`+term(d.t[ts[i]]);r.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',+b.dataset.t===i))};
  r.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>pick(+b.dataset.t));pick(ts.length-1)}
-$('go').onclick=async()=>{const sis=$('sis').value.trim(),code=$('code').value.replace(/[\s-]/g,'').toUpperCase(),er=$('err');er.textContent='';if(!sis||!code){er.textContent='Enter both SIS number and access code.';return}
+$('go').onclick=async()=>{const sis=norm($('sis').value),code=norm($('code').value).replace(/-/g,'').toUpperCase(),er=$('err');er.textContent='';if(!sis||!code){er.textContent='Enter both SIS number and access code.';return}
  $('go').disabled=true;$('go').textContent='Checking…';
- try{show(await open(sis,code))}catch(e){await new Promise(r=>setTimeout(r,800));er.textContent=e.message==='nodata'?'Report data is not available yet. Please try later.':'SIS number or access code is incorrect.'}
+ try{show(await open(sis,code))}catch(e){await new Promise(r=>setTimeout(r,800));er.textContent=e.message==='nodata'?'Report data is not available yet. Please try later.':/debug/.test(location.search)?`DEBUG: ${e.message==='nosis'?'SIS not found in file ('+e.n+' students in file)':'SIS found but access code is wrong'} · SIS length ${sis.length}, code length ${code.length}`:'SIS number or access code is incorrect.'}
  $('go').disabled=false;$('go').textContent='View report'};
 $('code').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click()});
 </script></body></html>
