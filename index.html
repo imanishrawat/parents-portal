@@ -1,58 +1,81 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Parent Portal – Maths Progress</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Parent Portal – Student Progress Report</title>
 <style>
-:root{--bg:#f3f6fb;--card:#fff;--tx:#17212f;--mu:#667085;--bd:#e2e8f0;--ac:#1d4ed8;--ok:#15803d;--bad:#b91c1c}
-@media(prefers-color-scheme:dark){:root{--bg:#0f172a;--card:#1e293b;--tx:#e5e7eb;--mu:#94a3b8;--bd:#334155;--ac:#60a5fa;--ok:#4ade80;--bad:#f87171}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,sans-serif}
-.w{max-width:760px;margin:0 auto;padding:16px}.c{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
-h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:0 0 8px}.mu{color:var(--mu);font-size:13px}
-input{width:100%;padding:11px;border:1px solid var(--bd);border-radius:10px;font-size:16px;background:var(--bg);color:var(--tx);margin:6px 0 12px}
-button{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:600;font-size:15px;cursor:pointer}button.g{background:var(--bd);color:var(--tx)}
-.tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto}.tabs button{background:var(--card);color:var(--tx);border:1px solid var(--bd)}.tabs button.on{background:var(--ac);color:#fff}
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.chip{flex:1;min-width:100px;background:var(--bg);border-radius:12px;padding:10px;text-align:center}.chip b{display:block;font-size:20px}
-.t{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:7px 6px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top}th{color:var(--mu);font-weight:600;font-size:12px}
-.err{color:var(--bad);min-height:20px}.ok{color:var(--ok)}.bad{color:var(--bad)}footer{text-align:center;color:var(--mu);font-size:12px;padding:10px}
-@media print{.noprint{display:none}body{background:#fff;color:#000}}
-</style></head><body><div class="w">
-<div id="login" class="c"><h1>📘 Parent Portal</h1><div class="mu" style="margin-bottom:12px">View your child’s Maths progress report.</div>
-<label>SIS number<input id="sis" inputmode="numeric" autocomplete="off"></label><label>Access code<input id="code" autocomplete="off" autocapitalize="characters" placeholder="6 characters, given by the teacher"></label>
-<button id="go">View report</button><div class="err" id="err"></div></div>
+:root{--navy:#10294a;--navy2:#1d4177;--gold:#b88a2e;--bg:#eef1f6;--card:#fff;--tx:#1b2433;--mu:#667085;--bd:#e3e8ef;--ok:#15803d;--bl:#1d4ed8;--am:#b45309;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Arial,sans-serif}
+.hd{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-bottom:4px solid var(--gold)}
+.hd .in{max-width:860px;margin:0 auto;padding:18px 16px;display:flex;align-items:center;gap:14px}
+.crest{width:46px;height:46px;border-radius:50%;background:#fff2;border:1px solid #fff5;display:flex;align-items:center;justify-content:center;font-size:24px}
+.sch{font-size:18px;font-weight:700;letter-spacing:.2px}.sub{font-size:13px;opacity:.85}
+.w{max-width:860px;margin:0 auto;padding:16px}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 3px #10294a10}
+h2{font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.8px;color:var(--navy2);border-bottom:2px solid var(--bd);padding-bottom:6px}
+.mu{color:var(--mu);font-size:13px}.err{color:var(--bad);min-height:20px;font-size:14px}
+label{font-size:13px;font-weight:600;color:var(--mu)}input{width:100%;padding:12px;border:1px solid #cdd5e0;border-radius:10px;font-size:16px;margin:6px 0 14px;background:#fff;color:var(--tx)}
+button{background:var(--navy2);color:#fff;border:0;border-radius:10px;padding:11px 18px;font-weight:600;font-size:15px;cursor:pointer}button.g{background:#fff;color:var(--navy2);border:1px solid #cdd5e0}
+.login{max-width:420px;margin:30px auto}.login h1{font-size:20px;margin:0 0 4px;color:var(--navy)}
+.id{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.id b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--mu);font-weight:600}.id span{font-size:16px;font-weight:600}
+.nm{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto}.tabs button{background:#fff;color:var(--navy2);border:1px solid #cdd5e0}.tabs button.on{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}.k{border:1px solid var(--bd);border-radius:10px;padding:10px;text-align:center;background:#fafbfd}
+.k b{display:block;font-size:22px;line-height:1.2}.k small{display:block;color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:.5px}.k i{display:block;font-style:normal;color:var(--mu);font-size:11px}
+.k.hero{background:var(--navy);border-color:var(--navy);color:#fff}.k.hero small,.k.hero i{color:#cbd5e1}
+.bar{height:10px;background:#e8edf5;border-radius:6px;overflow:hidden;display:flex}.bar>div{height:100%}
+.t{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th{background:#f1f4f9;color:var(--navy2);text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.5px}td,th{padding:8px 8px;border-bottom:1px solid var(--bd);vertical-align:top}
+tr:last-child td{border-bottom:0}.gh{background:var(--navy2)!important;color:#fff!important}
+.p{display:inline-block;min-width:52px;text-align:center;padding:2px 8px;border-radius:999px;font-weight:700;font-size:13px}
+.hi{background:#dcfce7;color:#166534}.ok{background:#dbeafe;color:#1e40af}.mid{background:#fef3c7;color:#92400e}.lo{background:#fee2e2;color:#991b1b}
+.bad{color:var(--bad)}.good{color:var(--ok)}.row{display:flex;justify-content:space-between;gap:10px;margin:4px 0}
+footer{text-align:center;color:var(--mu);font-size:12px;padding:14px 10px 26px}
+.sig{display:none}
+@media print{body{background:#fff}.noprint{display:none!important}.c{box-shadow:none;break-inside:avoid}.hd{-webkit-print-color-adjust:exact;print-color-adjust:exact}.sig{display:flex;justify-content:space-between;margin-top:40px;font-size:13px}.sig div{border-top:1px solid #999;padding-top:4px;width:40%}}
+</style></head><body>
+<div class="hd"><div class="in"><div class="crest">🎓</div><div><div class="sch" id="sch">Student Progress Report</div><div class="sub" id="sub">Parent Portal · Mathematics</div></div></div></div>
+<div class="w">
+<div id="login" class="c login"><h1>Parent Login</h1><div class="mu" style="margin-bottom:14px">Enter your child’s SIS number and the private access code given by the teacher.</div>
+<label for="sis">SIS number</label><input id="sis" inputmode="numeric" autocomplete="off"><label for="code">Access code</label><input id="code" autocomplete="off" autocapitalize="characters" placeholder="6 characters">
+<button id="go" style="width:100%">View report</button><div class="err" id="err" style="margin-top:8px"></div></div>
 <div id="rep" hidden></div>
-<footer>© Manish Rawat</footer></div>
+</div>
+<footer>© Manish Rawat · Confidential – for the parent/guardian of the student named above</footer>
 <script>
 const $=id=>document.getElementById(id),te=new TextEncoder(),td=new TextDecoder();
 const ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s).replace(/[\u0660-\u0669]/g,d=>d.charCodeAt(0)-0x660).replace(/[\u06F0-\u06F9]/g,d=>d.charCodeAt(0)-0x6F0).replace(/[\s\u200B-\u200F\u00A0\uFEFF]/g,'');
 const fd=d=>{if(!d)return '';const m=String(d).match(/^(\d{4})-(\d\d)-(\d\d)/);return m?m[3]+'/'+m[2]+'/'+m[1]:esc(d)};
+const bd=v=>v>80?'hi':v>=60?'ok':v>=50?'mid':'lo',col={hi:'#16a34a',ok:'#2563eb',mid:'#d97706',lo:'#dc2626'};
+const pill=v=>v==null?'<span class="mu">–</span>':`<span class="p ${bd(v)}">${Math.round(v)}%</span>`;
 async function open(sis,code){
  const r=await fetch('parent-data.json',{cache:'no-store'});if(!r.ok)throw new Error('nodata');const B=await r.json();
  const h=await crypto.subtle.digest('SHA-256',te.encode(sis+':'+B.k)),id=[...new Uint8Array(h)].slice(0,12).map(x=>x.toString(16).padStart(2,'0')).join(''),e=B.d[id];
  if(!e){const x=new Error('nosis');x.n=Object.keys(B.d).length;throw x}
  try{const km=await crypto.subtle.importKey('raw',te.encode(sis+':'+code),'PBKDF2',false,['deriveKey']);
  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:ub(e.s),iterations:200000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
- const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(e.i)},key,ub(e.c));
- return{d:JSON.parse(td.decode(pt)),u:B.u}}catch(x){throw new Error('badcode')}
+ return{d:JSON.parse(td.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(e.i)},key,ub(e.c)))),u:B.u}}catch(x){throw new Error('badcode')}
 }
-function term(R){let h='';const ch=[];
- if(R.fa!=null&&R.fa!=='')ch.push(['FA average',R.fa+'%']);
- if(R.at){const t=R.at.P+R.at.A+R.at.L;ch.push(['Attendance',Math.round((R.at.P+R.at.L)/t*100)+'%'])}
- if(R.b)ch.push(['Behaviour',R.b.s+'/100']);
- if(ch.length)h+='<div class="chips">'+ch.map(c=>`<div class="chip"><b>${c[1]}</b><span class="mu">${c[0]}</span></div>`).join('')+'</div>';
- if(R.m&&R.m.length){const g={};R.m.forEach(x=>(g[x.c||'Assessments']=g[x.c||'Assessments']||[]).push(x));
-  h+='<div class="c"><h2>Assessment marks</h2>'+Object.keys(g).map(k=>`<div class="t"><table><tr><th colspan="3">${esc(k)}</th></tr>${g[k].map(x=>`<tr><td>${esc(x.a)}</td><td>${x.x?'Absent':x.p==null?'–':x.p.toFixed(1)+'%'+(x.r!=null&&x.o?` <span class="mu">(${esc(x.r)}/${esc(x.o)})</span>`:'')}</td><td class="mu">${fd(x.d)}</td></tr>`).join('')}</table></div>`).join('')+'</div>'}
- if(R.w&&R.w.length)h+=`<div class="c"><h2>Classwork &amp; homework</h2><div class="t"><table><tr><th>Task</th><th>Date</th><th>Status</th><th>Mark</th></tr>${R.w.map(x=>`<tr><td><b>${esc(x.k)}</b> – ${esc(x.t)}${x.tp?`<br><span class="mu">${esc(x.tp)}</span>`:''}${x.cm?`<br><span class="mu">${esc(x.cm)}</span>`:''}</td><td class="mu">${fd(x.d)}</td><td class="${/missing|not done/i.test(x.st)?'bad':''}">${esc(x.st)}</td><td>${x.mk==null?'–':esc(x.mk)+(x.mx?'/'+esc(x.mx):'')}</td></tr>`).join('')}</table></div></div>`;
- if(R.at)h+=`<div class="c"><h2>Attendance</h2><div>Present: <b>${R.at.P}</b> · Late: <b>${R.at.L}</b> · Absent: <b>${R.at.A}</b></div>${R.at.ad.length?`<div class="mu">Absent on: ${R.at.ad.map(fd).join(', ')}</div>`:''}${R.at.ld.length?`<div class="mu">Late on: ${R.at.ld.map(fd).join(', ')}</div>`:''}</div>`;
- if(R.b&&R.b.l.length)h+=`<div class="c"><h2>Behaviour</h2><div class="t"><table>${R.b.l.map(x=>`<tr><td class="mu">${fd(x.d)}</td><td>${esc(x.t)}</td><td class="${x.v<0?'bad':'ok'}">${x.v>0?'+':''}${esc(x.v)}</td></tr>`).join('')}</table></div></div>`;
- if(R.rm&&R.rm.length)h+=`<div class="c"><h2>Teacher remarks</h2>${R.rm.map(x=>`<p><span class="mu">${fd(x.d)}</span><br>${esc(x.t)}</p>`).join('')}</div>`;
+function result(R,t,all){const x=R.tr;if(!x)return R.fa!=null&&R.fa!==''?`<div class="c"><h2>Term result</h2><div class="kp"><div class="k"><b>${R.fa}%</b><small>Formative average</small></div></div></div>`:'';
+ const k=(l,v,s,c)=>`<div class="k ${c||''}"><small>${l}</small><b>${v}</b>${s?`<i>${s}</i>`:''}</div>`,w=x.w,pc=v=>v==null?'–':Math.round(v)+'%';
+ let h=`<div class="c"><h2>${esc(t)} result</h2><div class="kp">${k('Diagnostic',pc(x.d),'baseline')}${k('Formative average',pc(x.fa),w.f?'weight '+w.f:'')}${w.s?k('Summative',pc(x.ss),'weight '+w.s):''}${w.p?k('Project',pc(x.pb),'weight '+w.p):''}${w.c?k('Centralized exam',pc(x.ce),'weight '+w.c):''}${k('Term score',x.sc==null?'–':Math.round(x.sc)+'/100',x.pv?'provisional':'','hero')}${k('Due score',x.du==null?'–':x.du+' / '+x.mx,'of annual 100','hero')}</div>`;
+ if(x.sc!=null)h+=`<div style="margin-top:12px"><div class="bar"><div style="width:${Math.min(100,x.sc)}%;background:${col[bd(x.sc)]}"></div></div></div>`;
+ return h+'</div>'}
+function annual(d){let pts=0,mx=0,rows='';Object.keys(d.t).forEach(t=>{const x=d.t[t].tr;if(x&&x.du!=null){pts+=x.du;mx+=x.mx;rows+=`<tr><td>${esc(t)}</td><td>${Math.round(x.sc)}/100</td><td>${x.du} / ${x.mx}</td></tr>`}});
+ if(!rows)return '';const pct=pts/mx*100;return `<div class="c"><h2>Annual progress (MOE weighting)</h2><div class="t"><table><tr><th>Term</th><th>Term score</th><th>Due score</th></tr>${rows}<tr><td><b>Total so far</b></td><td><b>${Math.round(pct)}%</b></td><td><b>${Math.round(pts*10)/10} / ${mx}</b></td></tr></table></div></div>`}
+function term(R,t){let h=result(R,t);
+ if(R.at){const a=R.at,n=a.P+a.A+a.L,pr=Math.round((a.P+a.L)/n*100);h+=`<div class="c"><h2>Attendance</h2><div class="row"><span>Attendance rate</span><b>${pr}%</b></div><div class="bar"><div style="width:${a.P/n*100}%;background:#16a34a"></div><div style="width:${a.L/n*100}%;background:#d97706"></div><div style="width:${a.A/n*100}%;background:#dc2626"></div></div><div class="mu" style="margin-top:8px"><span class="good">● Present ${a.P}</span> &nbsp; <span style="color:#b45309">● Late ${a.L}</span> &nbsp; <span class="bad">● Absent ${a.A}</span></div>${a.ad.length?`<div class="mu">Absent on: ${a.ad.map(fd).join(', ')}</div>`:''}${a.ld.length?`<div class="mu">Late on: ${a.ld.map(fd).join(', ')}</div>`:''}</div>`}
+ if(R.m&&R.m.length){const g={};R.m.forEach(x=>(g[x.c||'Assessments']=g[x.c||'Assessments']||[]).push(x));h+='<div class="c"><h2>Assessment marks</h2>'+Object.keys(g).map(k=>`<div class="t"><table><tr><th colspan="3" class="gh">${esc(k)}</th></tr>${g[k].map(x=>`<tr><td>${esc(x.a)}</td><td>${x.x?'Absent':x.p==null?'–':pill(x.p)+(x.r!=null&&x.o?` <span class="mu">${esc(x.r)}/${esc(x.o)}</span>`:'')}</td><td class="mu">${fd(x.d)}</td></tr>`).join('')}</table></div>`).join('<div style="height:8px"></div>')+'</div>'}
+ if(R.w&&R.w.length)h+=`<div class="c"><h2>Classwork &amp; homework</h2><div class="t"><table><tr><th>Task</th><th>Date</th><th>Status</th><th>Mark</th></tr>${R.w.map(x=>`<tr><td><b>${esc(x.k)}</b> – ${esc(x.t)}${x.tp?`<div class="mu">${esc(x.tp)}</div>`:''}${x.cm?`<div class="mu">${esc(x.cm)}</div>`:''}</td><td class="mu">${fd(x.d)}</td><td class="${/missing|not done/i.test(x.st)?'bad':''}">${esc(x.st)}</td><td>${x.mk==null?'–':esc(x.mk)+(x.mx?'/'+esc(x.mx):'')}</td></tr>`).join('')}</table></div></div>`;
+ if(R.b){h+=`<div class="c"><h2>Behaviour</h2><div class="row"><span>Behaviour score</span><b>${R.b.s}/100</b></div><div class="bar"><div style="width:${R.b.s}%;background:${col[bd(R.b.s)]}"></div></div>${R.b.l.length?`<div class="t" style="margin-top:8px"><table>${R.b.l.map(x=>`<tr><td class="mu">${fd(x.d)}</td><td>${esc(x.t)}</td><td class="${x.v<0?'bad':'good'}">${x.v>0?'+':''}${esc(x.v)}</td></tr>`).join('')}</table></div>`:''}</div>`}
+ if(R.rm&&R.rm.length)h+=`<div class="c"><h2>Teacher’s remarks</h2>${R.rm.map(x=>`<p style="margin:0 0 8px"><span class="mu">${fd(x.d)}</span><br>${esc(x.t)}</p>`).join('')}</div>`;
  return h||'<div class="c mu">No records for this term yet.</div>'}
-function show(res){const d=res.d,ts=Object.keys(d.t);$('login').hidden=true;const r=$('rep');r.hidden=false;
- r.innerHTML=`<div class="c"><h1>${esc(d.n)}</h1><div class="mu">Class ${esc(d.g)} · ${esc(d.y)} · Updated ${fd(res.u)}</div><div class="noprint" style="margin-top:10px"><button class="g" onclick="print()">🖨️ Print / Save PDF</button> <button class="g" onclick="location.reload()">Log out</button></div></div>${ts.length?`<div class="tabs noprint">${ts.map((t,i)=>`<button data-t="${i}" class="${i==ts.length-1?'on':''}">${t}</button>`).join('')}</div><div id="tb"></div>`:'<div class="c mu">No records published yet.</div>'}`;
- if(!ts.length)return;const pick=i=>{$('tb').innerHTML=`<h2 style="margin:4px 2px 10px">${ts[i]}</h2>`+term(d.t[ts[i]]);r.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',+b.dataset.t===i))};
- r.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>pick(+b.dataset.t));pick(ts.length-1)}
-$('go').onclick=async()=>{const sis=norm($('sis').value),code=norm($('code').value).replace(/-/g,'').toUpperCase(),er=$('err');er.textContent='';if(!sis||!code){er.textContent='Enter both SIS number and access code.';return}
+function show(res){const d=res.d,ts=Object.keys(d.t);$('login').hidden=true;if(d.sc)$('sch').textContent=d.sc;$('sub').textContent='Student Progress Report · Mathematics · '+d.y;const r=$('rep');r.hidden=false;
+ r.innerHTML=`<div class="c"><div class="nm">${esc(d.n)}</div><div class="id"><div><b>Class</b><span>${esc(d.g)}</span></div>${d.id?`<div><b>SIS number</b><span>${esc(d.id)}</span></div>`:''}<div><b>Academic year</b><span>${esc(d.y)}</span></div>${d.tc?`<div><b>Teacher</b><span>${esc(d.tc)}</span></div>`:''}<div><b>Last updated</b><span>${fd(res.u)}</span></div></div><div class="noprint" style="margin-top:14px;display:flex;gap:8px"><button onclick="print()">🖨️ Print / Save as PDF</button><button class="g" onclick="location.reload()">Log out</button></div></div>${ts.length?`<div class="tabs noprint">${ts.map((t,i)=>`<button data-t="${i}">${t}</button>`).join('')}</div><div id="tb"></div>`:'<div class="c mu">No records published yet.</div>'}<div class="sig"><div>Class teacher</div><div>Parent / Guardian</div></div>`;
+ if(!ts.length)return;const pick=i=>{$('tb').innerHTML=annualOnce(d,i)+`<div class="mu" style="margin:0 2px 8px;font-weight:600">${ts[i]}</div>`+term(d.t[ts[i]],ts[i]);r.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',+b.dataset.t===i))};
+ const annualOnce=(d,i)=>'';r.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>pick(+b.dataset.t));pick(ts.length-1);
+ const a=annual(d);if(a)$('tb').insertAdjacentHTML('beforebegin',a)}
+$('go').onclick=async()=>{const sis=norm($('sis').value),code=norm($('code').value).replace(/-/g,'').toUpperCase(),er=$('err');er.textContent='';if(!sis||!code){er.textContent='Please enter both SIS number and access code.';return}
  $('go').disabled=true;$('go').textContent='Checking…';
- try{show(await open(sis,code))}catch(e){await new Promise(r=>setTimeout(r,800));er.textContent=e.message==='nodata'?'Report data is not available yet. Please try later.':/debug/.test(location.search)?`DEBUG: ${e.message==='nosis'?'SIS not found in file ('+e.n+' students in file)':'SIS found but access code is wrong'} · SIS length ${sis.length}, code length ${code.length}`:'SIS number or access code is incorrect.'}
+ try{show(await open(sis,code))}catch(e){await new Promise(r=>setTimeout(r,800));er.textContent=e.message==='nodata'?'Report data is not available yet. Please try later.':/debug/.test(location.search)?`DEBUG: ${e.message==='nosis'?'SIS not found ('+e.n+' students in file)':'SIS found, access code wrong'} · SIS length ${sis.length}, code length ${code.length}`:'SIS number or access code is incorrect.'}
  $('go').disabled=false;$('go').textContent='View report'};
-$('code').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click()});
+$('code').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click()});$('sis').addEventListener('keydown',e=>{if(e.key==='Enter')$('code').focus()});
 </script></body></html>
