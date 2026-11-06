@@ -78,4 +78,6 @@ $('go').onclick=async()=>{const sis=norm($('sis').value),code=norm($('code').val
  try{show(await open(sis,code))}catch(e){await new Promise(r=>setTimeout(r,800));er.textContent=e.message==='nodata'?'Report data is not available yet. Please try later.':/debug/.test(location.search)?`DEBUG: ${e.message==='nosis'?'SIS not found ('+e.n+' students in file)':'SIS found, access code wrong'} · SIS length ${sis.length}, code length ${code.length}`:'SIS number or access code is incorrect.'}
  $('go').disabled=false;$('go').textContent='View report'};
 $('code').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click()});$('sis').addEventListener('keydown',e=>{if(e.key==='Enter')$('code').focus()});
+/* personal link: #SIS-CODE signs the parent straight in, then the hash is removed from the address bar */
+(function(){const m=location.hash.replace(/^#/,'').match(/^([^-]+)-([A-Za-z0-9]+)$/);if(!m)return;$('sis').value=m[1];$('code').value=m[2];try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}$('go').click()})();
 </script></body></html>
